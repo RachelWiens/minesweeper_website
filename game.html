@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content="text/html;charset=utf-8" http-equiv="content-type">
+  <meta content="utf-8" http-equiv="encoding">
+  <link rel="stylesheet" type="text/css" href="main.css">
+  <script type="text/javascript" src="tile.js"></script>
+  <script type="text/javascript" src="board.js"></script>
+  <script type="text/javascript" src="minesweeper.js"></script>
+  <title>Rachel Wiens</title>
+  <script>
+    const boardHeight = 10;
+    const boardLength = 10;
+    const numMines = 30;
+    var game;
+
+    // Align elements
+    function doOnLoad() {
+        createBoard();
+        game = Minesweeper(boardHeight, boardLength, numMines);
+    }
+
+    // Create the HTML board and return a 2D array containing all the buttons
+    function createBoard() {
+        // TODO: Replace with JQuery template
+        var board_btns = [];
+        var table = document.getElementById('minesweeper_table');
+        for (i=0; i<boardHeight; i++) {
+            board_btns[i] = [];
+            var row = table.insertRow(-1);
+            for (j=0; j<boardLength; j++) {
+                var cell = row.insertCell(j);
+                var button = document.createElement("button");
+                button.type = "button";
+                button.id = "btn" + i + j;
+                button.className = "ms_tile_btn";
+                button.onclick = function() {
+                    // TODO: Implement button left and right click calls
+                };
+                cell.appendChild(button);
+                board_btns[i][j] = button;
+            }
+        }
+        return board_btns;
+    }
+
+    // nuke and reinitialize board
+    function clearBoard(){
+        var table = document.getElementById('minesweeper_table');
+        table.innerHTML = "";
+        createBoard();
+    }
+
+  </script>
+</head>
+
+<body onload="doOnLoad()">
+
+  <div id="toolbar_div">
+    <nav>
+      <!-- Replace with actual navigation buttons, no br -->
+      <a href="">Home</a><br>
+      <a href="">Bio</a><br>
+      <a href="">Resume</a><br>
+      <a href="">Code</a><br>
+      <a href="https://rainspeak.deviantart.com">Art</a><br>
+    </nav>
+  </div>
+
+  <div id="main_div">
+    <p>main</p>
+    <table id="minesweeper_table">
+
+    </table>
+  </div>
+
+</body>
+</html>
