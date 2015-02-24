@@ -17,7 +17,7 @@ function Minesweeper(boardHeight, boardLength, numMines) {
 	// minefield = array of mines. Element is true if it is a mine, false otherwise
     this.minefield = new Array(boardHeight);
     for( var k=0; k<boardHeight; k++ ){
-        this.minefield[i] = new Array(boardLength);
+        this.minefield[k] = new Array(boardLength);
     }
 
     // Function to shuffle mines. Resets the board to all false, then randomly adds numMines mines.
