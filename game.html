@@ -12,43 +12,64 @@
     const boardHeight = 10;
     const boardLength = 10;
     const numMines = 30;
-    var game;
 
     // Align elements
     function doOnLoad() {
-        createBoard();
-        game = Minesweeper(boardHeight, boardLength, numMines);
+      var game = new Minesweeper(boardHeight, boardLength, numMines);
+      createBoard(game);
     }
 
-    // Create the HTML board and return a 2D array containing all the buttons
-    function createBoard() {
-        // TODO: Replace with JQuery template
-        var board_btns = [];
-        var table = document.getElementById('minesweeper_table');
-        for (i=0; i<boardHeight; i++) {
-            board_btns[i] = [];
-            var row = table.insertRow(-1);
-            for (j=0; j<boardLength; j++) {
-                var cell = row.insertCell(j);
-                var button = document.createElement("button");
-                button.type = "button";
-                button.id = "btn" + i + j;
-                button.className = "ms_tile_btn";
-                button.onclick = function() {
-                    // TODO: Implement button left and right click calls
-                };
-                cell.appendChild(button);
-                board_btns[i][j] = button;
+    /**
+     * Create the HTML board and return a 2D array containing all the buttons
+     * @param {Minesweeper} game
+     */
+    function createBoard(game) {
+      // TODO: Replace with JQuery template
+      var board_btns = [];
+      var table = document.getElementById('minesweeper_table');
+      for (var i=0; i<boardHeight; i++) {
+        board_btns[i] = [];
+        var row = table.insertRow(-1);
+        for (var j=0; j<boardLength; j++) {
+          var cell = row.insertCell(j);
+          var button = document.createElement("button");
+          button.type = "button";
+          button.id = "btn" + i + j;
+          button.className = "ms_tile_btn";
+          // When a button is clicked, make that move and update the board.
+          button.onclick = (function(x, y) {
+            // Return a function that has variables x and y in local scope.
+            return function() {
+              // TODO: Implement button right click calls
+              if( game.makeMove(x, y)) {  // If move is valid.
+                // TODO: Game over logic.
+                var tile = (game.getBoard())[x][y];
+                button.innerHTML = tile.toString();
+                button.disabled = true;
+                // If tile is empty, show all tiles around it.
+                if( tile == Tile.TileEnum.EMPTY ){
+                  for( var k=-1; k<2; k++ ){
+                    for( var l=-1; l<2; l++ ){
+                      // TODO: showTile(x+i, y+j);
+                    }
+                  }
+                }
+              }
             }
+          })(i, j);
+          cell.appendChild(button);
+          board_btns[i][j] = button;
         }
-        return board_btns;
+      }
+      return board_btns;
     }
 
     // nuke and reinitialize board
     function clearBoard(){
         var table = document.getElementById('minesweeper_table');
         table.innerHTML = "";
-        createBoard();
+        var game = new Minesweeper(boardHeight, boardLength, numMines);
+        createBoard(game);
     }
 
   </script>

@@ -11,77 +11,83 @@
  
  /**
  * Constructor for Tile "class"
- * @param: int n
+ * @param: {number} n
  */
 function Tile(n) {
-	this.number = n;
-    return this;
+  this.number = n;
+  return this;
 }
-	
+  
 /**
- * @num {number}
+ * @enum {number}
  */
 Tile.TileEnum = { 
-	UNKNOWN: -1, 
-	EMPTY: 0,  
-	ONE: 1, TWO: 2 , THREE: 3, FOUR: 4, FIVE: 5, SIX: 6, SEVEN: 7, EIGHT: 8, 
-	MINE: 9,
-	FLAGGED: 10
+  UNKNOWN: -1, 
+  EMPTY: 0,  
+  ONE: 1, TWO: 2 , THREE: 3, FOUR: 4, FIVE: 5, SIX: 6, SEVEN: 7, EIGHT: 8, 
+  MINE: 9,
+  FLAGGED: 10
 };
 
 /**
- * @param int n
- * @return Tile
+ * @enum {Tile}
  */
-Tile.prototype.getTile = function(n) {
-	switch(n){
-		case 0:
-			return Tile.TileEnum.EMPTY;
-		case 1:
-			return Tile.TileEnum.ONE;
-		case 2:
-			return Tile.TileEnum.TWO;
-		case 3:
-      return Tile.TileEnum.THREE;
-    case 4:
-			return Tile.TileEnum.FOUR;
-		case 5:
-			return Tile.TileEnum.FIVE;
-		case 6:
-			return Tile.TileEnum.SIX;
-		case 7:
-			return Tile.TileEnum.SEVEN;
-		case 8:
-			return Tile.TileEnum.EIGHT;
-		case 9:
-			return Tile.TileEnum.MINE;
-		case 10:
-			return Tile.TileEnum.FLAGGED;
-		default:
-			return Tile.TileEnum.UNKNOWN;
-	}
+Tile.TileType = {
+  UNKNOWN: new Tile(Tile.TileEnum.UNKNOWN), 
+  EMPTY: new Tile(Tile.TileEnum.EMPTY),  
+  ONE: new Tile(Tile.TileEnum.ONE),
+  TWO: new Tile(Tile.TileEnum.TWO),
+  THREE: new Tile(Tile.TileEnum.THREE),
+  FOUR: new Tile(Tile.TileEnum.FOUR),
+  FIVE: new Tile(Tile.TileEnum.FIVE),
+  SIX: new Tile(Tile.TileEnum.SIX),
+  SEVEN: new Tile(Tile.TileEnum.SEVEN),
+  EIGHT: new Tile(Tile.TileEnum.EIGHT), 
+  MINE: new Tile(Tile.TileEnum.MINE),
+  FLAGGED: new Tile(Tile.TileEnum.FLAGGED)
+
 }
 
 /**
- * @return int
+ * @param {number} n
+ * @return {Tile}
  */
-Tile.prototype.getNumber = function() {
-	return this.number;
+Tile.getTile = function(n) {
+  if( n >= 0 && n <= 10 ) {
+    return new Tile(n);
+  }
+  return Tile.TileType.UNKNOWN;
 }
 
+/**
+ * @return {number}
+ */
+Tile.prototype.getNumber = function() {
+  return this.number;
+}
+
+/**
+ * @param {Tile}
+ * @return boolean
+ */
+Tile.prototype.equals = function(otherTile) {
+    return ( this.number == otherTile.getNumber() );
+}
+
+
 /** 
- * @return String
+ * @return {string}
  */
  Tile.prototype.toString = function() {
-	switch(this.number){
-		case Tile.TileEnum.UNKNOWN:
-			return " ";
-		case Tile.TileEnum.MINE:
-			return "*";
-		case Tile.TileEnum.FLAGGED: 
-			return "X";
-		default:
-			return this.number.toString();
-	}
+  switch(this.number){
+    case Tile.TileEnum.UNKNOWN:
+      return " ";
+    case Tile.TileEnum.MINE:
+      return "*";
+    case Tile.TileEnum.FLAGGED: 
+      return "X";
+    default:
+      return this.number.toString();
+  }
 }
 
