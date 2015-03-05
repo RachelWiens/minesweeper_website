@@ -37,15 +37,15 @@
           button.id = "btn" + i + j;
           button.className = "ms_tile_btn";
           // When a button is clicked, make that move and update the board.
-          button.onclick = (function(x, y) {
+          button.onclick = (function(x, y, btn) {
             // Return a function that has variables x and y in local scope.
             return function() {
               // TODO: Implement button right click calls
               if( game.makeMove(x, y)) {  // If move is valid.
                 // TODO: Game over logic.
                 var tile = (game.getBoard())[x][y];
-                button.innerHTML = tile.toString();
-                button.disabled = true;
+                btn.innerHTML = tile.toString();
+                btn.disabled = true;
                 // If tile is empty, show all tiles around it.
                 if( tile == Tile.TileEnum.EMPTY ){
                   for( var k=-1; k<2; k++ ){
@@ -56,7 +56,7 @@
                 }
               }
             }
-          })(i, j);
+          })(i, j, button);
           cell.appendChild(button);
           board_btns[i][j] = button;
         }
