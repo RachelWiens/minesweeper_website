@@ -103,13 +103,23 @@ Minesweeper.prototype.shuffleMines = function() {
  * @param {number} i
  * @param {number} j
  */
- Minesweeper.prototype.flag = function(i, j) {
+Minesweeper.prototype.flag = function(i, j) {
   var tile = this.board.getTile(i, j);
   if( tile.equals(Tile.TileType.UNKNOWN) ){
-    this.board.setTile(i, j, Tile.FLAGGED);
+    this.board.setTile(i, j, Tile.TileType.FLAGGED);
   } else if( tile.equals(Tile.FLAGGED) ){
     this.board.setTile(i, j, Tile.TileType.UNKNOWN);
   }
+}
+  
+/** 
+ * Returns true if a tile is flagged.
+ * @param {number} i
+ * @param {number} j
+ * @return {boolean}
+ */
+Minesweeper.prototype.isFlagged = function(i, j) {
+  return this.board.getTile(i, j).equals(Tile.TileType.FLAGGED);
 }
   
 /** 
@@ -132,7 +142,7 @@ Minesweeper.prototype.isGameWon = function() {
  * @param {number} j
  * @return {boolean} that is false if the tile is a mine, and true otherwise. 
  */
- Minesweeper.prototype.revealTile = function(i, j) {
+Minesweeper.prototype.revealTile = function(i, j) {
   if( this.minefield[i][j] ){        // if tile is a mine
     this.board.setTile(i,j, Tile.TileType.MINE);
     return false;

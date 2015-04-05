@@ -9,13 +9,16 @@
   <script type="text/javascript" src="minesweeper.js"></script>
   <title>Rachel Wiens</title>
   <script>
+    // TODO: Move js out into its own file and add a namespace.
+
     const boardHeight = 10;
     const boardLength = 10;
     const numMines = 30;
+    var game;
 
     // Align elements
     function doOnLoad() {
-      var game = new Minesweeper(boardHeight, boardLength, numMines);
+      game = new Minesweeper(boardHeight, boardLength, numMines);
       createBoard(game);
     }
 
@@ -37,31 +40,74 @@
           button.id = "btn" + i + j;
           button.className = "ms_tile_btn";
           // When a button is clicked, make that move and update the board.
-          button.onclick = (function(x, y, btn) {
-            // Return a function that has variables x and y in local scope.
-            return function() {
-              // TODO: Implement button right click calls
-              if( game.makeMove(x, y)) {  // If move is valid.
-                // TODO: Game over logic.
-                var tile = (game.getBoard())[x][y];
-                btn.innerHTML = tile.toString();
-                btn.disabled = true;
-                // If tile is empty, show all tiles around it.
-                if( tile == Tile.TileEnum.EMPTY ){
-                  for( var k=-1; k<2; k++ ){
-                    for( var l=-1; l<2; l++ ){
-                      // TODO: showTile(x+i, y+j);
-                    }
-                  }
-                }
-              }
-            }
-          })(i, j, button);
+          button.onmousedown = onBtnClick(i, j);
           cell.appendChild(button);
           board_btns[i][j] = button;
         }
       }
       return board_btns;
+    };
+
+    // Return a function that handles left and right mouse clicks seperately and has variables in local scope.
+    onBtnClick = function(x, y) {
+      // Return a function that has variables x and y in local scope.
+      return function(event) {
+        var btn = event.target;
+        if( !btn ) btn = event.srcElement;
+        if( event.button == 0 ) { // left mouse button clicked.
+          onLeftClick(x, y, btn);
+        } else {
+          onRightOrMiddleClick(x, y, btn);
+        }
+      };
+    };
+
+    /**
+     * Reveal a tile when it is left clicked.
+     * Unless it is already flagged, in which case do nothing.
+     * The revealed tile will be disabled.
+     */
+    onLeftClick = function(x, y, btn) {
+      if( game.isFlagged(x, y) ) return;  // Can't reveal a flagged tile.
+      if( game.makeMove(x, y)) {  // If move does not result in a game loss.
+        var tile = (game.getBoard())[x][y];
+        btn.innerHTML = tile.toString();
+        btn.disabled = true;
+        // If tile is empty, show all tiles around it.
+        if( tile == Tile.TileEnum.EMPTY ){
+          for( var k=-1; k<2; k++ ){
+            for( var l=-1; l<2; l++ ){
+              // TODO: showTile(x+i, y+j);
+            }
+          }
+        }
+      } else { // Game over.
+        var tile = (game.getBoard())[x][y];
+        btn.innerHTML = tile.toString(); // Show the game ending tile.
+        document.getElementById('main_info').innerHTML = "Game Over";
+        gameOver();
+      }
+    };
+
+    /**
+     * Flag or unflag a tile when it is right or middle clicked.
+     */
+    onRightOrMiddleClick = function(x, y, btn) {
+      game.flag(x, y);
+      var tile = (game.getBoard())[x][y];
+      btn.innerHTML = tile.toString();
+    };
+
+    /**
+     * Game is over, disable all tiles on the board.
+     */
+    function gameOver() {
+      for (var i=0; i<boardHeight; i++) {
+        for (var j=0; j<boardLength; j++) {
+          var btn = document.getElementById( "btn" + i + j );
+          btn.disabled = true;
+        }
+      }
     }
 
     // nuke and reinitialize board
@@ -89,7 +135,7 @@
   </div>
 
   <div id="main_div">
-    <p>main</p>
+    <p id="main_info">Play a game.</p>
     <table id="minesweeper_table">
 
     </table>
