@@ -107,7 +107,7 @@ Minesweeper.prototype.flag = function(i, j) {
   var tile = this.board.getTile(i, j);
   if( tile.equals(Tile.TileType.UNKNOWN) ){
     this.board.setTile(i, j, Tile.TileType.FLAGGED);
-  } else if( tile.equals(Tile.FLAGGED) ){
+  } else if( tile.equals(Tile.TileType.FLAGGED) ){
     this.board.setTile(i, j, Tile.TileType.UNKNOWN);
   }
 }

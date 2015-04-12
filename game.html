@@ -15,11 +15,13 @@
     const boardLength = 10;
     const numMines = 30;
     var game;
+    var numMinesLeft;
 
     // Align elements
     function doOnLoad() {
       game = new Minesweeper(boardHeight, boardLength, numMines);
       createBoard(game);
+      document.getElementById('num_mines').innerHTML = numMinesLeft;
     }
 
     /**
@@ -28,6 +30,7 @@
      */
     function createBoard(game) {
       // TODO: Replace with JQuery template
+      numMinesLeft = numMines;
       var board_btns = [];
       var table = document.getElementById('minesweeper_table');
       for (var i=0; i<boardHeight; i++) {
@@ -74,9 +77,9 @@
         btn.innerHTML = tile.toString();
         btn.disabled = true;
         // If tile is empty, show all tiles around it.
-        if( tile == Tile.TileEnum.EMPTY ){
-          for( var k=-1; k<2; k++ ){
-            for( var l=-1; l<2; l++ ){
+        if( tile.equals(Tile.TileType.EMPTY) ) {
+          for( var k=-1; k<2; k++ ) {
+            for( var l=-1; l<2; l++ ) {
               // TODO: showTile(x+i, y+j);
             }
           }
@@ -95,7 +98,13 @@
     onRightOrMiddleClick = function(x, y, btn) {
       game.flag(x, y);
       var tile = (game.getBoard())[x][y];
+      if( tile.equals(Tile.TileType.FLAGGED) ) {
+        numMinesLeft -= 1;
+      } else {
+        numMinesLeft += 1;
+      }
       btn.innerHTML = tile.toString();
+      document.getElementById('num_mines').innerHTML = numMinesLeft;
     };
 
     /**
@@ -116,6 +125,7 @@
         table.innerHTML = "";
         var game = new Minesweeper(boardHeight, boardLength, numMines);
         createBoard(game);
+        document.getElementById('num_mines').innerHTML = numMinesLeft;
     }
 
   </script>
@@ -136,6 +146,10 @@
 
   <div id="main_div">
     <p id="main_info">Play a game.</p>
+    <div id="game_toolbar">
+      Mines: <span id="num_mines"></span>
+      <button onClick="clearBoard();">New Game</button>
+    </div>
     <table id="minesweeper_table">
 
     </table>
