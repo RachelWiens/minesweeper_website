@@ -19,8 +19,16 @@ body {
 }
 
 #start_game_btn {
+    margin: 10px;
     margin-left:auto ;
     margin-right:auto ;
+    height: 30px;
+}
+
+
+#new_game_btn {
+    margin: 10px;
+    height: 30px;
 }
 
 #minesweeper_toolbar {

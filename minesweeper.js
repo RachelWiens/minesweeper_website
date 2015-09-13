@@ -170,9 +170,11 @@ Minesweeper.prototype.revealNeighbours = function(i, j) {
   for(var k=-1; k<2; k++){  // check [i][j]'s horizontal, vertical, and diagonal neighbours
     for( var l=-1; l<2; l++){
       if( (i+k >= 0) && (i+k < this.boardHeight) && (j+l >=0) && (j+l < this.boardLength)  ){    // if index is within bounds
-        if( (this.board.getTile(i+k, j+l)).equals(Tile.TileType.UNKNOWN) ){    // if tile is unknown, set it and check its neighbours
+        var tile = this.board.getTile(i+k, j+l);
+        if( tile.equals(Tile.TileType.UNKNOWN) ){    // if tile is unknown, set it and check its neighbours
           this.revealTile(i+k, j+l);  // reveal tile
-          if( (this.board.getTile(i+k, j+l)).equals(Tile.TileType.EMPTY) ) this.revealNeighbours(i+k, j+l); // if tile is empty, continue revealing its neighbours
+          tile = this.board.getTile(i+k, j+l);
+          if( tile.equals(Tile.TileType.EMPTY) ) this.revealNeighbours(i+k, j+l); // if tile is empty, continue revealing its neighbours
         }
       }
     }
@@ -193,7 +195,9 @@ Minesweeper.prototype.makeMove = function(i, j) {
     
   if( !this.revealTile(i,j) ){      // if a mine has been hit
     return false;
-  } else if( (this.board.getTile(i,j)).equals(Tile.TileType.EMPTY) ){    // if tile is empty, continue revealing its neighbours
+  } 
+  tile = this.board.getTile(i, j);
+  if( tile.equals(Tile.TileType.EMPTY) ){    // if tile is empty, continue revealing its neighbours
     this.revealNeighbours(i, j);
   }
     

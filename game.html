@@ -77,17 +77,18 @@
         btn.innerHTML = tile.toString();
         btn.disabled = true;
         // If tile is empty, show all tiles around it.
+    
         if( tile.equals(Tile.TileType.EMPTY) ) {
-          for( var k=-1; k<2; k++ ) {
-            for( var l=-1; l<2; l++ ) {
-              // TODO: showTile(x+i, y+j);
-            }
-          }
+          revealTileNeighbours(x, y);
         }
       } else { // Game over.
         var tile = (game.getBoard())[x][y];
         btn.innerHTML = tile.toString(); // Show the game ending tile.
-        document.getElementById('main_info').innerHTML = "Game Over";
+        if( game.isGameWon() ) {
+            document.getElementById('main_info').innerHTML = "Congratulations, you won!";
+        } else {
+            document.getElementById('main_info').innerHTML = "Oops, you lost! Please try again.";
+        }
         gameOver();
       }
     };
@@ -106,6 +107,28 @@
       btn.innerHTML = tile.toString();
       document.getElementById('num_mines').innerHTML = numMinesLeft;
     };
+    
+    /**
+     * Reveal all neighbours to a tile
+     * @param {number} i
+     * @param {number} j
+     */  
+    revealTileNeighbours = function(i, j) {
+      for(var k=-1; k<2; k++){  // check [i][j]'s horizontal, vertical, and diagonal neighbours
+        for( var l=-1; l<2; l++){
+          if( (i+k >= 0) && (i+k < this.boardHeight) && (j+l >=0) && (j+l < this.boardLength)  ){    // if index is within bounds
+            var tile = (game.getBoard())[i+k][j+l];
+            var btn = document.getElementById('btn'+(i+k)+''+(j+l));
+            if( tile.equals(Tile.TileType.EMPTY) && btn.disabled == false ) { // if tile is empty and has not been revealed yet, continue revealing its neighbours
+                btn.disabled = true;
+                revealTileNeighbours(i+k, j+l);
+            }
+            btn.innerHTML = tile.toString();
+            btn.disabled = true;
+          }
+        }
+      }
+    }
 
     /**
      * Game is over, disable all tiles on the board.
@@ -126,6 +149,7 @@
         var game = new Minesweeper(boardHeight, boardLength, numMines);
         createBoard(game);
         document.getElementById('num_mines').innerHTML = numMinesLeft;
+        document.getElementById('main_info').innerHTML = "Play a game.";
     }
 
   </script>
@@ -148,7 +172,7 @@
     <p id="main_info">Play a game.</p>
     <div id="game_toolbar">
       Mines: <span id="num_mines"></span>
-      <button onClick="clearBoard();">New Game</button>
+      <button id="new_game_btn" onClick="clearBoard();">New Game</button>
     </div>
     <table id="minesweeper_table">
 
