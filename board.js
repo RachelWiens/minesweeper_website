@@ -23,7 +23,6 @@ function Board(boardHeight, boardLength, numMines) {
  * Change all board tiles to UNKNOWN
  */
 Board.prototype.clearBoard = function() {
-    console.log("clearBoard");
 	for( var i=0; i<this.height; i++){
 		for(var j=0; j<this.length; j++){
 			this.board[i][j]= new Tile(Tile.TileEnum.UNKNOWN);

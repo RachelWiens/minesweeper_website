@@ -18,15 +18,11 @@
     function createBoard() {
         // TODO: Replace with JQuery template
         
-        
-        //var table = document.getElementById('minesweeper_table');
         var gameDiv = document.getElementById('minesweeper_game_div');
         for (i=0; i<boardHeight; i++) {
             
             for (j=0; j<boardLength; j++) {
                 // TODO: Clean this mess up.
-                // TODO: Don't use table, and skip some tiles because they are already "filled" with a special button (ex. Bio).
-                
                
                 var button = document.createElement("button");
                 button.type = "button";
@@ -72,12 +68,7 @@
                 gameDiv.appendChild(button);
                 
             }
-            /* TODO: Remove
-            var br = document.createElement("br");
-            gameDiv.appendChild(br);
-            */
         }
-        
     }
 
     // nuke and reinitialize board

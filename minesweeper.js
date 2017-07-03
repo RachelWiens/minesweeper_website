@@ -194,7 +194,6 @@ Minesweeper.prototype.makeMove = function(i, j) {
   if( ! tile.equals(Tile.TileType.UNKNOWN) ) return true;    // if value of tile is already known, do nothing and return
     
   if( !this.revealTile(i,j) ){      // if a mine has been hit
-    console.log("mine hit");
     return false;
   } 
   tile = this.board.getTile(i, j);
