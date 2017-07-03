@@ -39,10 +39,51 @@ body {
     border-collapse: collapse;
 }
 
+#minesweeper_game_div {
+    border-collapse: collapse;
+    width: 500px;
+}
+
+#resume_div {
+   border-collapse: collapse;
+   width: 50px;
+   height:300px;
+   float: left;
+}
+
 td {
     /*border: 1px solid gray;*/
     padding: 0;
     margin: 0;
+}
+
+.index_ms_tile_btn {
+    float: left;
+    
+    /* TODO: This is all from ms_tile_btn, replace by using multiple classes */
+    height: 50px;
+    width: 50px;
+    -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+    -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+    box-shadow:inset 0px 1px 0px 0px #ffffff;
+    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f9f9f9), color-stop(1, #e9e9e9));
+    background:-moz-linear-gradient(top, #f9f9f9 5%, #e9e9e9 100%);
+    background:-webkit-linear-gradient(top, #f9f9f9 5%, #e9e9e9 100%);
+    background:-o-linear-gradient(top, #f9f9f9 5%, #e9e9e9 100%);
+    background:-ms-linear-gradient(top, #f9f9f9 5%, #e9e9e9 100%);
+    background:linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#e9e9e9',GradientType=0);
+    background-color:#f9f9f9;
+    border:1px solid #c5c5c9;
+    display:inline-block;
+    cursor:pointer;
+    color:#666666;
+    font-family:arial;
+    font-size:15px;
+    font-weight:bold;
+    padding:6px 24px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #ffffff;
 }
 
 .ms_tile_btn {
@@ -93,6 +134,7 @@ td {
 #resume_tile_btn {
     height: 50px;
     width: 300px;
+    float: none;
     /* Rotate 90 degrees */
     -webkit-transform: rotate(90deg);  /* Safari */
     -moz-transform: rotate(90deg);  /* Firefox */

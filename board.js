@@ -12,6 +12,9 @@ function Board(boardHeight, boardLength, numMines) {
 	this.length = boardLength;
 	this.totalMines = numMines;
 	this.board = new Array(boardHeight);
+	for( var i=0; i<this.height; i++){
+      this.board[i] = new Array(this.length);
+	}
 	this.clearBoard();				//initialize board to unknowns 
     return this;
 }
@@ -20,11 +23,10 @@ function Board(boardHeight, boardLength, numMines) {
  * Change all board tiles to UNKNOWN
  */
 Board.prototype.clearBoard = function() {
+    console.log("clearBoard");
 	for( var i=0; i<this.height; i++){
-        this.board[i] = new Array(this.length);
-        var row = this.board[i];
 		for(var j=0; j<this.length; j++){
-			row[j]= new Tile(Tile.TileEnum.UNKNOWN);
+			this.board[i][j]= new Tile(Tile.TileEnum.UNKNOWN);
 		}
 	}
 }

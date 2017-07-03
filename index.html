@@ -18,34 +18,40 @@
     function createBoard() {
         // TODO: Replace with JQuery template
         
-        var table = document.getElementById('minesweeper_table');
+        
+        //var table = document.getElementById('minesweeper_table');
+        var gameDiv = document.getElementById('minesweeper_game_div');
         for (i=0; i<boardHeight; i++) {
-            var row = table.insertRow(-1);
+            
             for (j=0; j<boardLength; j++) {
                 // TODO: Clean this mess up.
                 // TODO: Don't use table, and skip some tiles because they are already "filled" with a special button (ex. Bio).
-                var cell = row.insertCell(j);
+                
+               
                 var button = document.createElement("button");
                 button.type = "button";
-                button.className = "ms_tile_btn";
+                // TODO: Use both index_ms_tile_btn classes and ms_tile_btn (remember how to add multiple classes)
+                button.className = "index_ms_tile_btn";
                 if( i==1 ) {
                     switch( j ) {
                         case 1:
                             button.id = "bio_tile_btn";
                             button.innerHTML = "Bio";
                             button.onclick = function() {
-                                // TODO: Implement button left and right click calls
                                 window.location.href="bio.html";
                             };
                             break;
                             
                         case 8:
+                            var resumeDiv = document.createElement("div");
+                            resumeDiv.id = "resume_div";
                             button.id = "resume_tile_btn";
                             button.innerHTML = "Resume";
                             button.onclick = function() {
-                                // TODO: Implement button left and right click calls
                                 window.location.href="resume.html";
                             };
+                            resumeDiv.appendChild(button);
+                            button = resumeDiv;
                             break;
                             
                         case 2: case 3: case 4: // Skip tiles that should be replaced by the Bio button
@@ -63,9 +69,15 @@
                     // default small minesweeper tile button
                     button.id = "btn" + i + j;
                 }
-                cell.appendChild(button);
+                gameDiv.appendChild(button);
+                
             }
+            /* TODO: Remove
+            var br = document.createElement("br");
+            gameDiv.appendChild(br);
+            */
         }
+        
     }
 
     // nuke and reinitialize board
@@ -96,9 +108,9 @@
     <div id="minesweeper_toolbar">
         <button id="start_game_btn" onclick="window.location.href='game.html';">Start Game</button>
     </div>
-    <table id="minesweeper_table">
+    <div id="minesweeper_game_div">
 
-    </table>
+    </div>
   </div>
 
 </body>

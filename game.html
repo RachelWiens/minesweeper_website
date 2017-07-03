@@ -9,11 +9,15 @@
   <script type="text/javascript" src="minesweeper.js"></script>
   <title>Rachel Wiens</title>
   <script>
+    // Note: Two-finger click on chromebook seems to be a shortcut for right click,
+    //        meaning it's easy to mistake a normal click for a right click when navigating + clicking with different fingers
     // TODO: Move js out into its own file and add a namespace.
+    // TODO: Press "N" or "n" for a new game
+    // TODO: Optimize code better for less New() calls, and so that clearBoard() doesn't get called twice.
 
     const boardHeight = 10;
     const boardLength = 10;
-    const numMines = 30;
+    const numMines = 25;
     var game;
     var numMinesLeft;
 
@@ -82,6 +86,7 @@
           revealTileNeighbours(x, y);
         }
       } else { // Game over.
+        console.log("Game over");
         var tile = (game.getBoard())[x][y];
         btn.innerHTML = tile.toString(); // Show the game ending tile.
         if( game.isGameWon() ) {
@@ -108,6 +113,8 @@
       document.getElementById('num_mines').innerHTML = numMinesLeft;
     };
     
+    
+    
     /**
      * Reveal all neighbours to a tile
      * @param {number} i
@@ -116,15 +123,16 @@
     revealTileNeighbours = function(i, j) {
       for(var k=-1; k<2; k++){  // check [i][j]'s horizontal, vertical, and diagonal neighbours
         for( var l=-1; l<2; l++){
-          if( (i+k >= 0) && (i+k < this.boardHeight) && (j+l >=0) && (j+l < this.boardLength)  ){    // if index is within bounds
+          if( (i+k >= 0) && (i+k < boardHeight) && (j+l >=0) && (j+l < boardLength)  ){    // if index is within bounds
             var tile = (game.getBoard())[i+k][j+l];
             var btn = document.getElementById('btn'+(i+k)+''+(j+l));
-            if( tile.equals(Tile.TileType.EMPTY) && btn.disabled == false ) { // if tile is empty and has not been revealed yet, continue revealing its neighbours
+            if( !tile.equals(Tile.TileType.FLAGGED) && btn.disabled == false ) { // if tile is empty and has not been revealed yet, continue revealing its neighbours
                 btn.disabled = true;
-                revealTileNeighbours(i+k, j+l);
+                btn.innerHTML = tile.toString();
+                if (tile.equals(Tile.TileType.EMPTY)) {
+                  revealTileNeighbours(i+k, j+l);
+                }
             }
-            btn.innerHTML = tile.toString();
-            btn.disabled = true;
           }
         }
       }
@@ -146,7 +154,7 @@
     function clearBoard(){
         var table = document.getElementById('minesweeper_table');
         table.innerHTML = "";
-        var game = new Minesweeper(boardHeight, boardLength, numMines);
+        game = new Minesweeper(boardHeight, boardLength, numMines);
         createBoard(game);
         document.getElementById('num_mines').innerHTML = numMinesLeft;
         document.getElementById('main_info').innerHTML = "Play a game.";
